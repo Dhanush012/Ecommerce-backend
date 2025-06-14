@@ -23,12 +23,20 @@ public class ProductService {
         product.setUpdatedAt(LocalDateTime.now());
 
         // Optional: calculate final price based on discount
+        // Example: 10% discount = 0.1 * price
         if (product.getDiscount() != null && product.getPrice() != null) {
-            // Example: 10% discount = 0.1 * price
+
             double discountAmount = product.getPrice().doubleValue() * (product.getDiscount().doubleValue() / 100);
             product.setFinalPrice(product.getPrice().subtract(java.math.BigDecimal.valueOf(discountAmount)));
         }
 
         return productRepository.save(product);
+    }
+
+    public void deleteProductById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new RuntimeException("Product with ID " + id + " not found.");
+        }
+        productRepository.deleteById(id);
     }
 }

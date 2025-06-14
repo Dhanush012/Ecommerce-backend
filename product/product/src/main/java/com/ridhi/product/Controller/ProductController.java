@@ -25,5 +25,8 @@ public class ProductController {
     public ResponseEntity<Product> addproduct(@RequestBody Product product){
         return new ResponseEntity<>(productService.addproduct(product),HttpStatus.OK);
     }
-
+    @DeleteMapping("/deletebyid")
+    public void deleteProduct(@RequestParam Long id) {
+        productService.deleteProductById(id);
+    }
 }
