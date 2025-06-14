@@ -26,4 +26,11 @@ public class CustomerUserService {
         }
         throw new RuntimeException("User Not Found!!");
     }
+
+    public void deleteUserById(Long userId) {
+        if (!customerUserRepo.existsById(userId)) {
+            throw new RuntimeException("User with ID " + userId + " not found!");
+        }
+        customerUserRepo.deleteById(userId);
+    }
 }
