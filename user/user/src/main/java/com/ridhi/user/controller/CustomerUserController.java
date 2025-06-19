@@ -10,17 +10,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/customeruser")
 public class CustomerUserController {
 
     @Autowired
     private CustomerUserService customerUserService;
 
-    @GetMapping("/users")
+    @PostMapping("/addusers")
+    public ResponseEntity<CustomerUser> adduser(@RequestBody CustomerUser user){
+        return new ResponseEntity<>(customerUserService.adduser(user),HttpStatus.OK);
+    }
+
+    @GetMapping
     public ResponseEntity<List<CustomerUser>> getallusers(){
         return new ResponseEntity<>(customerUserService.getallusers(),HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userid}")
+    @GetMapping("/{userid}")
     public ResponseEntity<CustomerUser> getuserbyId(@PathVariable Long userid){
         return new ResponseEntity<>(customerUserService.getuserbyId(userid),HttpStatus.OK);
     }

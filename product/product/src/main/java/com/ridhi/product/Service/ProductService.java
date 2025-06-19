@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -38,5 +39,14 @@ public class ProductService {
             throw new RuntimeException("Product with ID " + id + " not found.");
         }
         productRepository.deleteById(id);
+    }
+
+    public Product getproductbyid(Long id) {
+        Optional<Product> dummyproduct = productRepository.findById(id);
+        if(dummyproduct.isPresent()){
+            Product s = dummyproduct.get();
+            return s;
+        }
+        throw new RuntimeException("Product Id not found!!");
     }
 }

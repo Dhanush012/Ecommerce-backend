@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class CustomerUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long customerId;
 
     private String firstName;
@@ -27,8 +27,8 @@ public class CustomerUser {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Size(min = 8,message = "Password must be at least 8 characters")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.[0-9])(?=.[$#@&^])(?!.*[_])(?!.*[@#$^&*]$).{8,}$")
+//    @Size(min = 8,message = "Password must be at least 8 characters")
+//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.[0-9])(?=.[$#@&^])(?!.*[_])(?!.*[@#$^&*]$).{8,}$")
     private String password;
 
     @Column(length = 10)

@@ -3,6 +3,7 @@ package com.ridhi.user.service;
 import com.ridhi.user.model.CustomerUser;
 import com.ridhi.user.repository.CustomerUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +33,9 @@ public class CustomerUserService {
             throw new RuntimeException("User with ID " + userId + " not found!");
         }
         customerUserRepo.deleteById(userId);
+    }
+
+    public CustomerUser adduser(CustomerUser user) {
+        return customerUserRepo.save(user);
     }
 }

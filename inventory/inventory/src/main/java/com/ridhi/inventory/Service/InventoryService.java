@@ -2,10 +2,12 @@ package com.ridhi.inventory.Service;
 import com.ridhi.inventory.Model.Inventory;
 import com.ridhi.inventory.Repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class InventoryService {
 
     @Autowired
