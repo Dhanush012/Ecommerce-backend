@@ -28,7 +28,7 @@ public class OrderService {
     public Order placeOrder(OrderRequestDTO requestDTO) {
         // 1. Fetch cart by customer
         ResponseEntity<CartDTO> cartResponse = restTemplate.getForEntity(
-                cartServiceUrl + "/api/cart/customer/" + requestDTO.getCustomerId(), CartDTO.class);
+                cartServiceUrl + "/api/cart" + requestDTO.getCustomerId(), CartDTO.class);
         CartDTO cartDTO = cartResponse.getBody();
 
         if (cartDTO == null || cartDTO.getItems().isEmpty()) {

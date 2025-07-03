@@ -1,6 +1,5 @@
 package com.ridhi.Cartmicroservice.Model;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,17 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremented primary key
     private Long id;
 
+    @Column(nullable = false) // User ID associated with the cart
+    private Long userId;
+
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<CartItem> items = new ArrayList<>();
+
+    @Transient // Not persisted in the database
+    private double totalPrice;
+
+    public double getTotalPrice() {
+        return items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
+    }
 }

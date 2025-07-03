@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,8 +18,11 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremented primary key
     private Long itemId;
 
-    @Column(nullable = false) // Product name can be null in database
+    @Column(nullable = false) // Product name
     private String productName;
+
+    @Column(nullable = false) // Product ID
+    private Long productId;
 
     @Column(nullable = false) // Quantity cannot be null
     private int quantity;
@@ -26,8 +31,20 @@ public class CartItem {
     private double price;
 
     @ManyToOne(fetch = FetchType.LAZY) // Many items belong to one cart
-    @JoinColumn(name = "cart_id", nullable = true) // Foreign key to Cart, can be null initially
+    @JoinColumn(name = "cart_id", nullable = true) // Foreign key to Cart
     @JsonBackReference
     private Cart cart;
-}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(itemId, cartItem.itemId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemId);
+    }
+}

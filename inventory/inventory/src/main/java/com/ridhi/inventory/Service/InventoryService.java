@@ -1,4 +1,5 @@
 package com.ridhi.inventory.Service;
+
 import com.ridhi.inventory.Model.Inventory;
 import com.ridhi.inventory.Repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,12 @@ public class InventoryService {
         return inventoryRepository.findById(id);
     }
 
-    public Optional<Inventory> updateInventory(Long id, Inventory updatedInventory) {
-        return inventoryRepository.findById(id).map(inventory -> {
-            inventory.setProductId(updatedInventory.getProductId());
-            inventory.setCompanyId(updatedInventory.getCompanyId());
-            inventory.setStockQuantity(updatedInventory.getStockQuantity());
-            inventory.setWarehouseLocation(updatedInventory.getWarehouseLocation());
-            inventory.setLastRestockedAt(updatedInventory.getLastRestockedAt());
-            return inventoryRepository.save(inventory);
+    public Optional<Inventory> updateInventory(Long id, Inventory inventory) {
+        return inventoryRepository.findById(id).map(existingInventory -> {
+            existingInventory.setStockQuantity(inventory.getStockQuantity());
+            existingInventory.setWarehouseLocation(inventory.getWarehouseLocation());
+            existingInventory.setLastRestockedAt(inventory.getLastRestockedAt());
+            return inventoryRepository.save(existingInventory);
         });
     }
 
@@ -43,4 +42,11 @@ public class InventoryService {
         }
         return false;
     }
+
+    // New method for stock availability check
+    public Inventory checkStock(Long productId, int quantity) {
+        Inventory inventory = inventoryRepository.findByProductId(productId);
+        return inventory; // Null if not found
+    }
+
 }

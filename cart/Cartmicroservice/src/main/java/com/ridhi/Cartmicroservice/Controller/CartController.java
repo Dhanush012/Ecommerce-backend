@@ -1,6 +1,5 @@
 package com.ridhi.Cartmicroservice.Controller;
 
-
 import com.ridhi.Cartmicroservice.Model.Cart;
 import com.ridhi.Cartmicroservice.Model.CartItem;
 import com.ridhi.Cartmicroservice.Service.CartService;
@@ -24,26 +23,45 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/items")
-    public ResponseEntity<Cart> addItemToCart(@PathVariable Long cartId, @RequestBody CartItem item) {
-        return new ResponseEntity<>(cartService.addItemToCart(cartId, item), HttpStatus.CREATED);
+    public ResponseEntity<?> addItemToCart(@PathVariable Long cartId, @RequestBody CartItem item) {
+        try {
+            Cart updatedCart = cartService.addItemToCart(cartId, item);
+            return new ResponseEntity<>(updatedCart, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{cartId}/items/{itemId}")
-    public ResponseEntity<Cart> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
-        return new ResponseEntity<>(cartService.removeItemFromCart(cartId, itemId), HttpStatus.OK);
+    public ResponseEntity<?> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
+        try {
+            Cart updatedCart = cartService.removeItemFromCart(cartId, itemId);
+            return new ResponseEntity<>(updatedCart, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item or Cart not found.");
+        }
     }
 
     @PatchMapping("/{cartId}/items/{itemId}")
-    public ResponseEntity<Cart> updateItemQuantity(
+    public ResponseEntity<?> updateItemQuantity(
             @PathVariable Long cartId,
             @PathVariable Long itemId,
             @RequestParam int quantity) {
-        return new ResponseEntity<>(cartService.updateItemQuantity(cartId, itemId, quantity), HttpStatus.OK);
+        try {
+            Cart updatedCart = cartService.updateItemQuantity(cartId, itemId, quantity);
+            return new ResponseEntity<>(updatedCart, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping("/{cartId}")
-    public ResponseEntity<Cart> getCart(@PathVariable Long cartId) {
-        return new ResponseEntity<>(cartService.getCart(cartId), HttpStatus.OK);
+    public ResponseEntity<?> getCart(@PathVariable Long cartId) {
+        try {
+            Cart cart = cartService.getCart(cartId);
+            return new ResponseEntity<>(cart, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart not found.");
+        }
     }
 }
-
